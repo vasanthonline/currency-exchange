@@ -12,8 +12,6 @@ import { getRates } from './actions/action'
 class App extends React.Component<Props, {}> {
   
   getRates = () => {
-    console.log('this.props')
-    console.log(this.props)
     this.props.getRates()
   }
 

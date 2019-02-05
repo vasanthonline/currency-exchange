@@ -1,0 +1,40 @@
+{
+  "name": "revolut_currency_exchange",
+  "version": "1.0.0",
+  "description": "Revolut currency exchange",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "compile:watch": "tsc --watch",
+    "test": "tsc -p tsconfig.test.json && nyc mocha build-tests/test/*.js --exit",
+    "test:watch": "mocha --require ts-node/register --watch --watch-extensions ts test/*.ts",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.18",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.5",
+    "nyc": "^13.1.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  },
+  "nyc": {
+    "include": [
+      "build-tests/source/*.js"
+    ],
+    "extension": [
+      ".js"
+    ]
+  },
+  "license": "MIT"
+}
