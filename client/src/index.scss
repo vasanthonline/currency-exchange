@@ -8,6 +8,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  flex-direction: row;
+  display: flex;
+  flex-basis: auto;
+  flex-wrap: nowrap;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

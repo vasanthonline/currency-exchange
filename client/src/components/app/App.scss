@@ -1,0 +1,75 @@
+.app {
+  text-align: center;
+  width: 100%;
+  background-image: linear-gradient(#175CDF, #1E63EF, #2357BA);
+}
+
+.app-logo {
+  height: 40vmin;
+}
+
+.app-header {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.app-link {
+  color: #61dafb;
+}
+
+.pocket-from, .pocket-to {
+  width: 100%;
+  height: auto;
+  padding: 20px 0;
+
+  .pocket-container {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: all 1s ease;
+    visibility: hidden;
+    height: 0;
+    left: 100%;
+
+    &.active {
+      padding: 30px 15%;
+      opacity: 1;
+      visibility: visible;
+      height: auto;
+      left: 0%;
+    }
+
+    label {
+      color: rgba(255,255,255, 0.8);
+      font-size: 50px;
+    }
+
+    h3 {
+      color: rgba(255,255,255, 0.7);
+    }
+  }
+
+  .dots {
+
+    .dot {
+      cursor: pointer;
+      border-radius: 30px;
+      width: 15px;
+      height: 15px;
+      background-color: rgba(255, 255, 255, 0.6);
+      margin: 0 5px;
+      border: none;
+      outline: none;
+
+      &.active {
+        background-color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+}
