@@ -2,7 +2,6 @@
   "openExchange": {
     "apiKey": "960cbe6351c54f6da0f8f2926088a450",
     "ratesApiUrl": "https://openexchangerates.org/api/latest.json",
-    "convertApiUrl": "https://openexchangerates.org/api/convert/",
-    "currencies": ["USD", "GBP", "EUR"]
+    "currencies": {"USD": "$", "GBP":"£", "EUR":"€"}
   }
 }
