@@ -8,8 +8,8 @@ import 'react-dropdown/style.css';
 import { ReducerState } from '../../redux-store'
 import Pocket from './../pocket/pocket'
 import './App.scss';
-import {AppProps, Pockets, PocketState, State, Conversion} from './../component-interface'
-import { getRates, getBalance, convert } from '../../actions/action'
+import {AppProps, Pockets, PocketState, State, Conversion, ModifyBalanceAction} from './../component-interface'
+import { getRates, getBalance, convert, modifyBalance } from '../../actions/action'
 
 
 class App extends React.Component<AppProps, {}> {
@@ -47,7 +47,16 @@ class App extends React.Component<AppProps, {}> {
   }
 
   onExchangeClick() {
-    
+    const conversion = (this.props.conversion as Conversion)
+    if(conversion && conversion.from && conversion.to && conversion.fromValue && conversion.toValue){
+      const answer = window.confirm(`${conversion.from} ${conversion.fromValue} will be deducted and ${conversion.to} ${conversion.toValue} will be added. Do you want to continue?`)
+      if(!answer) return
+      const payload: Array<ModifyBalanceAction> = [
+        {'currency': conversion.from, 'amount': conversion.fromValue, 'type': 'remove'},
+        {'currency': conversion.to, 'amount': conversion.toValue, 'type': 'add'}
+      ]
+      this.props.modifyBalance && this.props.modifyBalance(payload)
+    }
   }
 
   render() {
@@ -83,6 +92,7 @@ class App extends React.Component<AppProps, {}> {
 const mapDispatchToProps = (dispatch: ThunkDispatch<ReducerState, void, AnyAction>) => ({
   getRates: (defaultCurrency: string) => dispatch(getRates(defaultCurrency)),
   getBalance: () =>  dispatch(getBalance()),
+  modifyBalance: (modifyBalanceActions: Array<ModifyBalanceAction>) => dispatch(modifyBalance(modifyBalanceActions)),
   convert: (fromCurrency: string, toCurrency: string, value: number) => dispatch(convert(fromCurrency, toCurrency, value))
 })
 

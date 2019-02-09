@@ -2,6 +2,7 @@
 export interface AppProps {
   getRates?: Function,
   getBalance?: Function,
+  modifyBalance?: Function,
   convert?: Function,
   conversion?: Conversion,
   rates?: Array<Rate>,
@@ -22,6 +23,13 @@ export interface Conversion {
   to: string,
   fromValue: number,
   toValue: number
+}
+
+
+export interface ModifyBalanceAction {
+  currency: string,
+  amount: number,
+  type: string
 }
 
 export interface Rate {

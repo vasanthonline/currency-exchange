@@ -4,6 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import axios from 'axios';
 
 import { IState } from './../redux-store'
+import { ModifyBalanceAction } from './../components/component-interface'
 
 export const getRates = ((defaultCurrency: string) => async (dispatch: ThunkDispatch<IState, void, AnyAction>) => {
   try{
@@ -54,6 +55,15 @@ export const getBalance = (() => async (dispatch: ThunkDispatch<IState, void, An
       message: err.message
     })
   }
+})
+
+export const modifyBalance = ((modifyBalanceActions: Array<ModifyBalanceAction>) => async (dispatch: ThunkDispatch<IState, void, AnyAction>) => {
+  const promises = modifyBalanceActions.map((modifyBalanceAction) => {
+    return fetch(`/api/balance/${modifyBalanceAction.type}/${modifyBalanceAction.currency}/${modifyBalanceAction.amount}`)
+  })
+  axios.all(promises)
+  .then(() => getBalance())
+  .catch((err) => alert(err))
 })
 
 async function fetch(url: string) {
