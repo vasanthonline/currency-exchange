@@ -62,7 +62,7 @@ export default class OpenExchangeClient {
       switch(rates.status){
         case 200:
           const toRate = rates.data.rates[to]
-          const convertedPayload = Object.assign({}, payload, {'toValue': toRate * value})
+          const convertedPayload = Object.assign({}, payload, {'toValue': Math.round(toRate * value * 100) / 100})
           return Promise.resolve({'status': Status.SUCCESS, 'payload': convertedPayload})
           break
         default:

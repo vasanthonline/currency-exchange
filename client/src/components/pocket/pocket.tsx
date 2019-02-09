@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { PocketProps, State, PocketState } from './../component-interface'
+import { PocketProps, State, PocketState, Pocket, Pockets } from './../component-interface'
 
-import { IState } from '../../redux-store'
+import { ReducerState } from '../../redux-store'
 import './pocket.scss'
 
-class App extends React.Component<PocketProps, {}> {
+class PocketComponent extends React.Component<PocketProps, {}> {
 
   constructor(props: PocketProps) {
     super(props)
@@ -33,22 +33,29 @@ class App extends React.Component<PocketProps, {}> {
     const slideIndex = n >= slides.length ? 0 : (n < 0 ? slides.length - 1 : n)
     const oldStatePocketContainer = {...(this.state as State)[pocketContainerClass]}
     oldStatePocketContainer.slideIndex = slideIndex
+    oldStatePocketContainer.exchangeValue = undefined
     this.setState({[pocketContainerClass]: oldStatePocketContainer}, () => {
       slides[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
       dots[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
     })
-    this.props.onSlideChange(pocketContainerClass, this.props.pockets[slideIndex].currency)
+    const currency = Object.keys(this.props.pockets)[slideIndex]
+    this.props.onSlideChange(pocketContainerClass, currency)
   }
 
-  onInputChange() {
-
+  onInputChange(pocketSource: string, ev: any) {
+    const inputVal = ev.target.value;
+    const oldStatePocketContainer = {...(this.state as State)[pocketSource]} as PocketState
+    oldStatePocketContainer.exchangeValue = inputVal
+    this.setState({[pocketSource]: oldStatePocketContainer})
   }
 
   onInputBlur(pocketSource: string, ev: any) {
     const inputVal = ev.target.value;
-    const oldStatePocketContainer = {...(this.state as State)[pocketSource]}
+    const oldStatePocketContainer = {...(this.state as State)[pocketSource]} as PocketState
     oldStatePocketContainer.exchangeValue = inputVal
-    this.setState({[pocketSource]: oldStatePocketContainer})
+    this.setState({[pocketSource]: oldStatePocketContainer}, () => {
+      this.props.onExchangeInput(pocketSource, ((this.state as State)[pocketSource] as PocketState))
+    })
   }
 
   onTouchStart(pocketSource: string, e: any){
@@ -71,21 +78,23 @@ class App extends React.Component<PocketProps, {}> {
   }
 
   render() {
+    const exchangeValue = this.props.value || ((this.state as State)[this.props.containerType] as PocketState).exchangeValue
+    const pockets = (this.props.pockets || {})
     return (<div className={this.props.containerType}>
-    {this.props.pockets.map((pocket, index) => {
+    {(Object.keys(pockets)).map((currency: string, index: number) => {
       return (<div key={index} className={index == 0 ? 'pocket-container active' : 'pocket-container'}>
-        <label>{pocket.currency}</label>
+        <label>{currency}</label>
         <input type='text' 
-          value={((this.state as State)[this.props.containerType] as PocketState).exchangeValue} 
-          onBlur={this.onInputBlur.bind(this, 'pocket-to')} 
+          value={exchangeValue} 
+          onBlur={this.onInputBlur.bind(this, this.props.containerType)} 
           onChange={this.onInputChange.bind(this, this.props.containerType)} 
-          placeholder={'Enter ' + pocket.symbol + ' value'} 
+          placeholder={'Enter ' + pockets[currency].symbol + ' value'} 
         />
-        <h3>You have {pocket.symbol}{pocket.balance}</h3>
+        <h3>You have {pockets[currency].symbol}{pockets[currency].balanceAmount}</h3>
       </div>)
     })}
     <div className="dots">
-      {this.props.pockets.map((pocket, index) => {
+      {(Object.keys(this.props.pockets || {})).map((currency: string, index: number) => {
         return (<button  key={index}
           className={index == 0 ? 'dot active' : 'dot'}
           onClick={this.moveToSlide.bind(this, this.props.containerType)}>
@@ -97,12 +106,12 @@ class App extends React.Component<PocketProps, {}> {
 
 }
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<IState, void, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<ReducerState, void, AnyAction>) => ({
   
 })
 
-const mapStateToProps = (state: object) => ({
+const mapStateToProps = (state: ReducerState) => ({
   ...state
  })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(PocketComponent);

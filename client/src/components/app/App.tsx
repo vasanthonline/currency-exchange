@@ -5,11 +5,11 @@ import { ThunkDispatch } from 'redux-thunk';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
-import { IState } from '../../redux-store'
+import { ReducerState } from '../../redux-store'
 import Pocket from './../pocket/pocket'
 import './App.scss';
-import {AppProps} from './../component-interface'
-import { getRates } from '../../actions/action'
+import {AppProps, Pockets, PocketState, State, Conversion} from './../component-interface'
+import { getRates, getBalance, convert } from '../../actions/action'
 
 
 class App extends React.Component<AppProps, {}> {
@@ -18,16 +18,28 @@ class App extends React.Component<AppProps, {}> {
     super(props)
     this.state = {'pocket-from':{'slideIndex': 0}, 'pocket-to':{'slideIndex': 0}}
     const defaultCurrency = 'USD'
-    this.props.getRates(defaultCurrency)
+    this.props.getRates && this.props.getRates(defaultCurrency)
+    this.props.getBalance && this.props.getBalance()
   }
 
-  onSlideChange(pocketContainer: string, currency: string) {
-    if(pocketContainer == 'pocket-from')
-      this.props.getRates(currency.toUpperCase())
+  onSlideChange(pocketContainerClass: string, currency: string) {
+    const oldStatePocketContainer = {...(this.state as State)[pocketContainerClass]}
+    oldStatePocketContainer.slideIndex = Object.keys(this.props.pockets as Pockets).indexOf(currency)
+    this.setState({[pocketContainerClass]: oldStatePocketContainer}, () => {
+      if(pocketContainerClass == 'pocket-from')
+        this.props.getRates && this.props.getRates(currency.toUpperCase())
+    })
   }
 
-  onRateSelect() {
-
+  onExchangeInput(pocketContainerClass: string, pocketState: PocketState){
+    this.setState({[pocketContainerClass]: pocketState}, () => {
+      const fromPocket = (this.state as State)['pocket-from']
+      const fromCurrency = Object.keys(this.props.pockets as Pockets)[fromPocket.slideIndex]
+      const toPocket = (this.state as State)['pocket-to']
+      const toCurrency = Object.keys(this.props.pockets as Pockets)[toPocket.slideIndex]
+      if(fromPocket.exchangeValue && fromCurrency && toCurrency)
+        this.props.convert && this.props.convert(fromCurrency, toCurrency, fromPocket.exchangeValue)
+    })
   }
 
   onClearClick() {
@@ -35,7 +47,7 @@ class App extends React.Component<AppProps, {}> {
   }
 
   onExchangeClick() {
-
+    
   }
 
   render() {
@@ -47,23 +59,35 @@ class App extends React.Component<AppProps, {}> {
       <div className="app">
         <header className="app-header">
           <button className='btn-cancel' onClick={this.onClearClick.bind(this)}>Clear</button>
-          <Dropdown options={dropdownRates} onChange={this.onRateSelect.bind(this)} value={(dropdownRates[0] || {}).value} placeholder="Select an option" />
+          <Dropdown options={dropdownRates} value={(dropdownRates[0] || {}).value} placeholder="Select an option" />
           <button className='btn-exchange' onClick={this.onExchangeClick.bind(this)}>Exchange</button>
         </header>
-        <Pocket containerType='pocket-from' pockets={this.props.pockets} onSlideChange={this.onSlideChange.bind(this)} />
+        <Pocket containerType='pocket-from' 
+          pockets={this.props.pockets as Pockets}
+          onSlideChange={this.onSlideChange.bind(this)}
+          onExchangeInput={this.onExchangeInput.bind(this)}
+        />
         <div className="arrow-down"></div>
-        <Pocket containerType='pocket-to' pockets={this.props.pockets} onSlideChange={this.onSlideChange.bind(this)}  />
+        <Pocket 
+          containerType='pocket-to'
+          value={((this.props.conversion || {}) as Conversion).toValue}
+          pockets={this.props.pockets as Pockets}
+          onSlideChange={this.onSlideChange.bind(this)}
+          onExchangeInput={this.onExchangeInput.bind(this)}
+        />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<IState, void, AnyAction>) => ({
-  getRates: (defaultCurrency: string) => dispatch(getRates(defaultCurrency))
+const mapDispatchToProps = (dispatch: ThunkDispatch<ReducerState, void, AnyAction>) => ({
+  getRates: (defaultCurrency: string) => dispatch(getRates(defaultCurrency)),
+  getBalance: () =>  dispatch(getBalance()),
+  convert: (fromCurrency: string, toCurrency: string, value: number) => dispatch(convert(fromCurrency, toCurrency, value))
 })
 
-const mapStateToProps = (state: any) => {
-  return {'rates': state.reducer.status == 1 ? state.reducer.payload : []}
-}
+const mapStateToProps = (state: ReducerState, ownProps: AppProps) => ({
+  ...state.reducer
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

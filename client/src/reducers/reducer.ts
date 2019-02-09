@@ -1,23 +1,24 @@
-import { IState } from './../redux-store'
+import { IState, Status, IAction } from './../redux-store'
+import { Rate, Pockets, Conversion } from './../components/component-interface'
 
-export interface Action {
-  type: string,
-  payload: IState
-}
-
-export default (state = {}, action: Action) => {
+export default (state: IState = {}, action: IAction): IState => {
+  let newState: IState = (Object.assign({}, state))
   switch (action.type) {
     case 'GET_RATES':
-      return action.payload
+      newState.rates = action.status == Status.SUCCESS ?  (action.payload as Array<Rate>) : []
+      break
     case 'GET_BALANCE':
-      return action.payload
+      newState.pockets = action.status == Status.SUCCESS ?  (action.payload as Pockets) : undefined
+      break
     case 'ADD_TO_BALANCE':
-      return action.payload
+      return action
     case 'REMOVE_FROM_BALANCE':
-      return action.payload
-    case 'CONVERT':
-      return action.payload
+      return action
+    case 'RECV_CONVERT':
+      newState.conversion = action.status == Status.SUCCESS ?  (action.payload as Conversion) : undefined
+      break
     default:
       return state
   }
+  return newState
  }

@@ -10,27 +10,31 @@ export const getRates = ((defaultCurrency: string) => async (dispatch: ThunkDisp
     const rates = await fetch(`/api/rates/${defaultCurrency}`)
     dispatch({
       type: 'GET_RATES',
-      payload: rates
+      status: rates.status,
+      payload: rates.payload
     })
   }catch(err){
     dispatch({
       type: 'GET_RATES',
-      payload: err
+      status: err.status,
+      message: err.message
     })
   }
 })
 
-export const convert = (() => async (dispatch: ThunkDispatch<IState, void, AnyAction>) => {
+export const convert = ((fromCurrency: string, toCurrency: string, value: number) => async (dispatch: ThunkDispatch<IState, void, AnyAction>) => {
   try{
-    const rates = await fetch('/api/convert')
+    const rates = await fetch(`/api/convert/${value}/${fromCurrency}/${toCurrency}`)
     dispatch({
-      type: 'CONVERT',
-      payload: rates.data
+      type: 'RECV_CONVERT',
+      status: rates.status,
+      payload: rates.payload
     })
   }catch(err){
     dispatch({
-      type: 'CONVERT',
-      payload: err
+      type: 'RECV_CONVERT',
+      status: err.status,
+      message: err.message
     })
   }
 })
@@ -40,12 +44,14 @@ export const getBalance = (() => async (dispatch: ThunkDispatch<IState, void, An
     const balance = await fetch('/api/balance')
     dispatch({
       type: 'GET_BALANCE',
-      payload: balance
+      status: balance.status,
+      payload: balance.payload
     })
   }catch(err){
     dispatch({
       type: 'GET_BALANCE',
-      payload: err
+      status: err.status,
+      message: err.message
     })
   }
 })

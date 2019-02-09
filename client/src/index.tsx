@@ -7,14 +7,8 @@ import store from './redux-store';
 import * as serviceWorker from './serviceWorker';
 
 
-const pockets = [
-  {'currency': 'USD', 'symbol': '$', 'balance': 45.30},
-  {'currency': 'GBP', 'symbol': '£', 'balance': 200.10},
-  {'currency': 'EUR', 'symbol': '€', 'balance': 25.75}
-]
-
 ReactDOM.render(<Provider store={store()}>
-  <App pockets={pockets} />
+  <App />
 </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
