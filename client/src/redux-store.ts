@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware, Store, AnyAction } from 'redux';
-import thunk, {ThunkMiddleware} from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import rootReducer from './reducers/root-reducer';
 
 export interface IState {

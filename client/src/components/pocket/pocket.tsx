@@ -5,6 +5,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { PocketProps, State, PocketState } from './../component-interface'
 
 import { IState } from '../../redux-store'
+import './pocket.scss'
 
 class App extends React.Component<PocketProps, {}> {
 
@@ -36,6 +37,7 @@ class App extends React.Component<PocketProps, {}> {
       slides[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
       dots[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
     })
+    this.props.onSlideChange(pocketContainerClass, this.props.pockets[slideIndex].currency)
   }
 
   onInputChange() {

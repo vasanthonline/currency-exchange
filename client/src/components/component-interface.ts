@@ -1,14 +1,15 @@
 
 export interface AppProps {
   getRates: Function,
-  rates: Array<Rate>,
+  rates?: Array<Rate>,
   pockets: Array<Pocket>
 }
 
 export interface PocketProps {
   [key: string]: Function | Array<Pocket> | string,
   pockets: Array<Pocket>,
-  containerType: string
+  containerType: string,
+  onSlideChange: Function
 }
 
 export interface Rate {

@@ -30,7 +30,7 @@ export default class OpenExchangeClient {
               'fromValue': 1, 
               'toCurrency': toCurrency, 
               'toSymbol': this.currencies[toCurrency], 
-              'toValue': rates.data.rates[toCurrency]
+              'toValue': Math.round(rates.data.rates[toCurrency] * 100) / 100
             })
             return rateAcc;
           }, [])
