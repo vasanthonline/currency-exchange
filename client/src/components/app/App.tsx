@@ -12,7 +12,7 @@ import {AppProps, Pockets, PocketState, State, Conversion, ModifyBalanceAction} 
 import { getRates, getBalance, convert, modifyBalance } from '../../actions/action'
 
 
-class App extends React.Component<AppProps, {}> {
+export class App extends React.Component<AppProps, {}> {
 
   constructor(props: AppProps){
     super(props)
@@ -79,7 +79,7 @@ class App extends React.Component<AppProps, {}> {
       <div className="app">
         <header className="app-header">
           <button className='btn-cancel'>Clear</button>
-          <Dropdown options={dropdownRates} value={(dropdownRates[0] || {}).value} placeholder="Select an option" />
+          <Dropdown options={dropdownRates} value={(dropdownRates[0] || {})['value']} placeholder="Select an option" />
           <button className='btn-exchange' onClick={this.onExchangeClick.bind(this)}>Exchange</button>
         </header>
         <Pocket containerType='pocket-from' 
