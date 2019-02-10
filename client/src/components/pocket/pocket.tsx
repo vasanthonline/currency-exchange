@@ -46,7 +46,10 @@ class PocketComponent extends React.Component<PocketProps, {}> {
   }
 
   onInputChange(pocketSource: string, ev: any) {
-    const inputVal = ev.target.value;
+    const inputVal = ev.target.value
+    const decimal = inputVal.split('.')[1]
+    if(decimal && decimal.length > 2)
+      return alert('Value upto maximum of 2 decimal digits is allowed.')
     const oldStatePocketContainer = {...(this.state as State)[pocketSource]} as PocketState
     oldStatePocketContainer.exchangeValue = inputVal
     this.setState({[pocketSource]: oldStatePocketContainer})

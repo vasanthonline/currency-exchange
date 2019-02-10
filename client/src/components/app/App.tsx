@@ -20,7 +20,7 @@ class App extends React.Component<AppProps, {}> {
     
     const oldStatePocketContainer = {...(this.state as State)['pocket-from']}
     const activeCurrency = Object.keys(this.props.pockets as Pockets || {})[oldStatePocketContainer.slideIndex]
-    this.props.getRates && this.props.getRates(activeCurrency)
+    this.props.getRates && this.props.getRates(activeCurrency || 'USD')
     this.props.getBalance && this.props.getBalance()
     
     setInterval(() => {
