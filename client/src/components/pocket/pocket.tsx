@@ -7,7 +7,7 @@ import { PocketProps, State, PocketState, Pocket, Pockets } from './../component
 import { ReducerState } from '../../redux-store'
 import './pocket.scss'
 
-class PocketComponent extends React.Component<PocketProps, {}> {
+export class PocketComponent extends React.Component<PocketProps, {}> {
 
   constructor(props: PocketProps) {
     super(props)

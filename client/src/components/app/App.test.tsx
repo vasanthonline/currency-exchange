@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-// import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux'
 
-import AppConnect, { App } from './App';
+import { App } from './App';
 import store from './../../redux-store';
 
 it('renders with inital state', () => {
