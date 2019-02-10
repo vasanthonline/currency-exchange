@@ -62,7 +62,15 @@ export const modifyBalance = ((modifyBalanceActions: Array<ModifyBalanceAction>)
     return fetch(`/api/balance/${modifyBalanceAction.type}/${modifyBalanceAction.currency}/${modifyBalanceAction.amount}`)
   })
   axios.all(promises)
-  .then(() => getBalance())
+  .then(async (results) => {
+    dispatch({
+      type: 'BALANCE_MODIFIED',
+      status: results.reduce((acc, result) => { 
+        acc = result.status
+        return acc
+      }, 0)
+    })
+  })
   .catch((err) => alert(err))
 })
 

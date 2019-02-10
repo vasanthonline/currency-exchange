@@ -22,6 +22,13 @@ class App extends React.Component<AppProps, {}> {
     this.props.getBalance && this.props.getBalance()
   }
 
+  componentDidUpdate(prevProps: AppProps, prevState: State) {
+    const pockets = this.props.pockets || {}
+    const pocketCurrencies = Object.keys(pockets)
+    if(pocketCurrencies.length > 0 && pockets[pocketCurrencies[0]].balanceAmount == undefined)
+      this.props.getBalance && this.props.getBalance()
+  }
+
   onSlideChange(pocketContainerClass: string, currency: string) {
     const oldStatePocketContainer = {...(this.state as State)[pocketContainerClass]}
     oldStatePocketContainer.slideIndex = Object.keys(this.props.pockets as Pockets).indexOf(currency)
@@ -40,10 +47,6 @@ class App extends React.Component<AppProps, {}> {
       if(fromPocket.exchangeValue && fromCurrency && toCurrency)
         this.props.convert && this.props.convert(fromCurrency, toCurrency, fromPocket.exchangeValue)
     })
-  }
-
-  onClearClick() {
-
   }
 
   onExchangeClick() {
@@ -67,7 +70,7 @@ class App extends React.Component<AppProps, {}> {
     return (
       <div className="app">
         <header className="app-header">
-          <button className='btn-cancel' onClick={this.onClearClick.bind(this)}>Clear</button>
+          <button className='btn-cancel'>Clear</button>
           <Dropdown options={dropdownRates} value={(dropdownRates[0] || {}).value} placeholder="Select an option" />
           <button className='btn-exchange' onClick={this.onExchangeClick.bind(this)}>Exchange</button>
         </header>

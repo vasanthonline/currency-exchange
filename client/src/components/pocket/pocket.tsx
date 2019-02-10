@@ -33,10 +33,13 @@ class PocketComponent extends React.Component<PocketProps, {}> {
     const slideIndex = n >= slides.length ? 0 : (n < 0 ? slides.length - 1 : n)
     const oldStatePocketContainer = {...(this.state as State)[pocketContainerClass]}
     oldStatePocketContainer.slideIndex = slideIndex
-    oldStatePocketContainer.exchangeValue = undefined
+    oldStatePocketContainer.exchangeValue = ''
     this.setState({[pocketContainerClass]: oldStatePocketContainer}, () => {
       slides[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
       dots[((this.state as State)[pocketContainerClass] as PocketState)['slideIndex']].className += ' active';
+      document.querySelectorAll('.exchange-input').forEach((el) => {
+        (el as HTMLInputElement).value = ''
+      })
     })
     const currency = Object.keys(this.props.pockets)[slideIndex]
     this.props.onSlideChange(pocketContainerClass, currency)
@@ -84,7 +87,8 @@ class PocketComponent extends React.Component<PocketProps, {}> {
     {(Object.keys(pockets)).map((currency: string, index: number) => {
       return (<div key={index} className={index == 0 ? 'pocket-container active' : 'pocket-container'}>
         <label>{currency}</label>
-        <input type='text' 
+        <input type='text'
+          className='exchange-input'
           value={exchangeValue} 
           onBlur={this.onInputBlur.bind(this, this.props.containerType)} 
           onChange={this.onInputChange.bind(this, this.props.containerType)} 

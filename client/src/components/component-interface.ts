@@ -53,7 +53,7 @@ export interface Pocket {
 
 export interface PocketState {
   slideIndex: number,
-  exchangeValue?: number,
+  exchangeValue?: number | string,
   touchStartX?: number,
   touchEndX?: number,
   [key : string]: string | number | undefined
