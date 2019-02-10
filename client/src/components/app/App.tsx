@@ -17,9 +17,17 @@ class App extends React.Component<AppProps, {}> {
   constructor(props: AppProps){
     super(props)
     this.state = {'pocket-from':{'slideIndex': 0}, 'pocket-to':{'slideIndex': 0}}
-    const defaultCurrency = 'USD'
-    this.props.getRates && this.props.getRates(defaultCurrency)
+    
+    const oldStatePocketContainer = {...(this.state as State)['pocket-from']}
+    const activeCurrency = Object.keys(this.props.pockets as Pockets || {})[oldStatePocketContainer.slideIndex]
+    this.props.getRates && this.props.getRates(activeCurrency)
     this.props.getBalance && this.props.getBalance()
+    
+    setInterval(() => {
+      const oldStatePocketContainer = {...(this.state as State)['pocket-from']}
+      const activeCurrency = Object.keys(this.props.pockets as Pockets || {})[oldStatePocketContainer.slideIndex]
+      this.props.getRates && this.props.getRates(activeCurrency)
+    }, 10000)
   }
 
   componentDidUpdate(prevProps: AppProps, prevState: State) {
