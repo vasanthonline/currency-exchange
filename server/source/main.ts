@@ -1,13 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import config from 'config'
 
 import OpenExchange from './open-exchange-client'
 import Balance from './balance'
 import { Status, Response } from './interface';
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || config.get('port');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -83,4 +84,7 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, './../../client/build', 'index.html'));
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+const server = app.listen(port, () => console.log(`Listening on port ${port}`));
+
+export { server }
+

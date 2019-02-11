@@ -9,6 +9,8 @@
 # server
 /server/dist
 /server/node_modules
+/server/build-tests
+/server/.nyc_output
 
 # testing
 /coverage

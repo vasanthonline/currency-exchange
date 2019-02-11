@@ -14,12 +14,14 @@ export default class Balance {
   }
 
   static addToBalance(currency: string, amount: number) {
+    if(!Balance.balanceDb) Balance.initialize()
     const existingBalance = Balance.balanceDb[currency]['balanceAmount']
     Balance.balanceDb[currency]['balanceAmount'] = Math.round((existingBalance + amount) * 100) / 100
     return {'status': Status.SUCCESS, 'payload': Balance.balanceDb[currency]}
   }
 
   static removeFromBalance(currency: string, amount: number) {
+    if(!Balance.balanceDb) Balance.initialize()
     const existingBalance = Balance.balanceDb[currency]['balanceAmount']
     Balance.balanceDb[currency]['balanceAmount'] = Math.round((existingBalance - amount) * 100) / 100
     return {'status': Status.SUCCESS, 'payload': Balance.balanceDb[currency]}
