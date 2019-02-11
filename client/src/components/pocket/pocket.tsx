@@ -11,7 +11,7 @@ export class PocketComponent extends React.Component<PocketProps, {}> {
 
   constructor(props: PocketProps) {
     super(props)
-    this.state = {[props.containerType]:{'slideIndex': 0}}
+    this.state = {[props.containerType]:{'slideIndex': 0, 'exchangeValue': ''}}
   }
 
   moveToSlide(pocketSource: string, ev: any) {

@@ -59,9 +59,6 @@ it('renders pocket on exchange value change', () => {
   let pocketComponent, exValue;
   const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent containerType='pocket-from' pockets={pockets} value={undefined} onSlideChange={undefined} onExchangeInput={(ev) => exValue = ev.target.value} ref={c => pocketComponent = c} /></Provider>, div, () => {
     const domNode = ReactDOM.findDOMNode(pocketComponent);
-    (domNode.firstChild.childNodes[1] as HTMLInputElement).value = '1.15'
-    console.log('pocketComponent.state')
-    console.log(pocketComponent.state)
     const oldStatePocketContainer = {...(pocketComponent.state as State)['pocket-from']} as PocketState
     oldStatePocketContainer.exchangeValue = 1.15
     pocketComponent.setState({'pocket-from': oldStatePocketContainer}, () => {
