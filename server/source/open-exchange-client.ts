@@ -38,12 +38,11 @@ export default class OpenExchangeClient {
            'status': Status.SUCCESS, 
            'payload': payload
           })
-        break
         default:
           return Promise.reject({'status': Status.FAILURE, 'message': `${rates.status} - ${rates.statusText}`})  
       }
     }catch(err){
-      return Promise.reject({'status': Status.FAILURE, 'message': `${err.name} - ${err.message}`})
+      return Promise.reject({'status': Status.FAILURE, 'payload': (err.response || {}).data || {}, 'message': `${err.name} - ${err.message}`})
     }
   }
 
@@ -64,12 +63,11 @@ export default class OpenExchangeClient {
           const toRate = rates.data.rates[to]
           const convertedPayload = Object.assign({}, payload, {'toValue': Math.round(toRate * value * 100) / 100})
           return Promise.resolve({'status': Status.SUCCESS, 'payload': convertedPayload})
-          break
         default:
           return Promise.reject({'status': Status.FAILURE, 'payload': payload, 'message': `${rates.status} - ${rates.statusText}`})  
       }
     }catch(err){
-      return Promise.reject({'status': Status.FAILURE, 'payload': payload, 'message': `${err.name} - ${err.message}`})
+      return Promise.reject({'status': Status.FAILURE, 'payload': Object.assign({}, (err.response || {}).data || {}, payload), 'message': `${err.name} - ${err.message}`})
     }
   }
 
