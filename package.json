@@ -6,6 +6,10 @@
   "scripts": {
     "start": "sh ./start.sh"
   },
+  "engines": {
+    "node": ">=10.15.x",
+    "npm": ">=6.4.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vasanth-Indix/revolut-currency-exchange.git"
