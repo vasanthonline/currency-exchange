@@ -1,0 +1,19 @@
+{
+  "name": "revolut-currency-exchange",
+  "version": "1.0.0",
+  "description": "In the project root directory, you can run below command. It runs the app in the production mode.<br> Open [http://localhost:5000](http://localhost:5000) to view it in the browser.",
+  "main": "index.js",
+  "scripts": {
+    "start": "sh ./start.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vasanth-Indix/revolut-currency-exchange.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vasanth-Indix/revolut-currency-exchange/issues"
+  },
+  "homepage": "https://github.com/Vasanth-Indix/revolut-currency-exchange#readme"
+}
