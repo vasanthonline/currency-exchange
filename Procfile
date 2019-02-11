@@ -1,1 +1,1 @@
-web: cd server && npm start
+web: chmod u+x start.sh && ./start.sh
