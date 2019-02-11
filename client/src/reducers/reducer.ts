@@ -7,7 +7,6 @@ export default (state: IState = {}, action: IAction): IState => {
   switch (action.type) {
     case 'GET_RATES':
       newState.rates = action.status == Status.SUCCESS ?  (action.payload as Array<Rate>) : []
-      delete newState.conversion
       break
     case 'GET_BALANCE':
       newState.pockets = action.status == Status.SUCCESS ?  (action.payload as Pockets) : undefined

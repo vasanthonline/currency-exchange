@@ -10,10 +10,12 @@ export interface AppProps {
 }
 
 export interface PocketProps {
-  [key: string]: Function | Pockets | string | number,
+  [key: string]: Function | Pockets | string | number | boolean,
   pockets: Pockets,
   containerType: string,
-  value: number,
+  value: number | string,
+  placeholder?: string,
+  readOnly?: boolean,
   onSlideChange: Function,
   onExchangeInput: Function
 }
@@ -56,7 +58,8 @@ export interface PocketState {
   exchangeValue?: number | string,
   touchStartX?: number,
   touchEndX?: number,
-  [key : string]: string | number | undefined
+  loading?: boolean,
+  [key : string]: string | number | undefined | boolean
 }
 
 export interface State {

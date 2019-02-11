@@ -9,7 +9,7 @@ import { State, PocketState } from './../component-interface'
 it('renders Pocket with inital state', () => {
   const div = document.createElement('div');
   let pocketComponent;
-  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent containerType='pocket-from' pockets={undefined} value={undefined} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
+  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent placeholder='' containerType='pocket-from' pockets={undefined} value={undefined} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
     expect(pocketComponent.state['pocket-from'].slideIndex).toEqual(0)
   });
   
@@ -22,7 +22,7 @@ it('renders DOM with pocket-container and dots', () => {
     'USD': {'currency': 'USD', 'symbol': '$', 'balanceAmount': 1.15}
   }
   let pocketComponent;
-  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent containerType='pocket-from' pockets={pockets} value={undefined} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
+  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent placeholder='' containerType='pocket-from' pockets={pockets} value={undefined} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
     const domNode = ReactDOM.findDOMNode(pocketComponent)
     expect(domNode.childNodes.length).toEqual(2)
     expect(domNode.firstChild.firstChild.nodeName).toEqual('LABEL')
@@ -40,7 +40,7 @@ it('renders pocket with input props', () => {
     'USD': {'currency': 'USD', 'symbol': '$', 'balanceAmount': 1.15}
   }
   let pocketComponent;
-  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent containerType='pocket-from' pockets={pockets} value={2.12} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
+  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent placeholder='' containerType='pocket-to' pockets={pockets} value={2.12} onSlideChange={undefined} onExchangeInput={undefined} ref={c => pocketComponent = c} /></Provider>, div, () => {
     const domNode = ReactDOM.findDOMNode(pocketComponent)
     expect(domNode.childNodes.length).toEqual(2)
     expect(domNode.firstChild.firstChild.textContent).toEqual('USD')
@@ -57,7 +57,7 @@ it('renders pocket on exchange value change', () => {
     'USD': {'currency': 'USD', 'symbol': '$', 'balanceAmount': 1.15}
   }
   let pocketComponent, exValue;
-  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent containerType='pocket-from' pockets={pockets} value={undefined} onSlideChange={undefined} onExchangeInput={(ev) => exValue = ev.target.value} ref={c => pocketComponent = c} /></Provider>, div, () => {
+  const pocket = ReactDOM.render(<Provider store={store()}><PocketComponent placeholder='' containerType='pocket-from' pockets={pockets} value={undefined} onSlideChange={undefined} onExchangeInput={(ev) => exValue = ev.target.value} ref={c => pocketComponent = c} /></Provider>, div, () => {
     const domNode = ReactDOM.findDOMNode(pocketComponent);
     const oldStatePocketContainer = {...(pocketComponent.state as State)['pocket-from']} as PocketState
     oldStatePocketContainer.exchangeValue = 1.15

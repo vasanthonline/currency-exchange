@@ -35,6 +35,11 @@ export class App extends React.Component<AppProps, {}> {
     const pocketCurrencies = Object.keys(pockets)
     if(pocketCurrencies.length > 0 && pockets[pocketCurrencies[0]].balanceAmount == undefined)
       this.props.getBalance && this.props.getBalance()
+    const fromPocket = {...(this.state as State)['pocket-from']}
+    if(this.props.conversion && this.props.conversion.toValue && fromPocket.loading){
+      fromPocket.loading = false
+      this.setState({'pocket-from': fromPocket})
+    }
   }
 
   onSlideChange(pocketContainerClass: string, currency: string) {
@@ -48,12 +53,17 @@ export class App extends React.Component<AppProps, {}> {
 
   onExchangeInput(pocketContainerClass: string, pocketState: PocketState){
     this.setState({[pocketContainerClass]: pocketState}, () => {
-      const fromPocket = (this.state as State)['pocket-from']
+      const fromPocket = {...(this.state as State)['pocket-from']}
       const fromCurrency = Object.keys(this.props.pockets as Pockets)[fromPocket.slideIndex]
-      const toPocket = (this.state as State)['pocket-to']
+      const toPocket = {...(this.state as State)['pocket-to']}
       const toCurrency = Object.keys(this.props.pockets as Pockets)[toPocket.slideIndex]
-      if(fromPocket.exchangeValue && fromCurrency && toCurrency)
-        this.props.convert && this.props.convert(fromCurrency, toCurrency, fromPocket.exchangeValue)
+      if(fromPocket.exchangeValue && fromCurrency && toCurrency){
+        fromPocket.loading = true
+        this.setState({'pocket-from': fromPocket}, () => {
+          this.props.convert && this.props.convert(fromCurrency, toCurrency, fromPocket.exchangeValue)
+        })
+      }
+        
     })
   }
 
@@ -75,6 +85,7 @@ export class App extends React.Component<AppProps, {}> {
       return {'label': `${rate.fromSymbol}${rate.fromValue} = ${rate.toSymbol}${rate.toValue}`, value: `${rate.fromCurrency}_${rate.toCurrency}`}
     })
 
+    let toValue = this.state['pocket-from'].loading ? undefined : ((this.props.conversion || {}) as Conversion).toValue
     return (
       <div className="app">
         <header className="app-header">
@@ -84,14 +95,17 @@ export class App extends React.Component<AppProps, {}> {
         </header>
         <Pocket containerType='pocket-from' 
           pockets={this.props.pockets as Pockets}
+          placeholder='Enter amount'
           onSlideChange={this.onSlideChange.bind(this)}
           onExchangeInput={this.onExchangeInput.bind(this)}
         />
         <div className="arrow-down"></div>
         <Pocket 
           containerType='pocket-to'
-          value={((this.props.conversion || {}) as Conversion).toValue}
+          readOnly={true}
+          value={toValue}
           pockets={this.props.pockets as Pockets}
+          placeholder={this.state['pocket-from'].loading ? 'Loading...' : ''}
           onSlideChange={this.onSlideChange.bind(this)}
           onExchangeInput={this.onExchangeInput.bind(this)}
         />

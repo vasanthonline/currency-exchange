@@ -84,19 +84,28 @@ export class PocketComponent extends React.Component<PocketProps, {}> {
   }
 
   render() {
-    const exchangeValue = this.props.value || ((this.state as State)[this.props.containerType] as PocketState).exchangeValue
+    const exchangeValue = this.props.containerType == 'pocket-from' ? ((this.state as State)[this.props.containerType] as PocketState).exchangeValue : this.props.value
     const pockets = (this.props.pockets || {})
     return (<div className={this.props.containerType}>
     {(Object.keys(pockets)).map((currency: string, index: number) => {
       return (<div key={index} className={index == 0 ? 'pocket-container active' : 'pocket-container'}>
         <label>{currency}</label>
-        <input type='text'
+        {(this.props.readOnly ? 
+        (<input type='text'
+          className='exchange-input'
+          readOnly
+          value={exchangeValue} 
+          onBlur={this.onInputBlur.bind(this, this.props.containerType)} 
+          onChange={this.onInputChange.bind(this, this.props.containerType)} 
+          placeholder={this.props.placeholder} 
+        />) : 
+        (<input type='text'
           className='exchange-input'
           value={exchangeValue} 
           onBlur={this.onInputBlur.bind(this, this.props.containerType)} 
           onChange={this.onInputChange.bind(this, this.props.containerType)} 
-          placeholder={'Enter ' + pockets[currency].symbol + ' value'} 
-        />
+          placeholder={this.props.placeholder} 
+        />))}
         <h3>You have {pockets[currency].symbol}{pockets[currency].balanceAmount}</h3>
       </div>)
     })}
