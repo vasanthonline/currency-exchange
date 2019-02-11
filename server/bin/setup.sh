@@ -9,13 +9,13 @@ npm install yarn -g
 
 # Client
 cd ./../client/
-yarn install
+yarn install --production=false
 CI=true npm run test
 npm run build
 
 # Server
 cd ./../server/
-yarn install
+yarn install --production=false
 npm run compile
 NODE_ENV=staging npm run test
 
