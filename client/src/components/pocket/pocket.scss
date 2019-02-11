@@ -9,16 +9,17 @@
 
   .pocket-container {
     text-align: left;
-    display: flex;
+    display: none;
     flex-direction: row;
     flex-wrap: wrap;
     opacity: 0;
-    transition: margin-left 0.4s ease-in-out, height 0.4s ease-in-out 0.8s;
+    transition: all 0.6s ease-in;
     margin-left: -1000px;
     height: 0;
     visibility: hidden;
 
     &.active {
+      display: flex;
       padding: 30px 15%;
       opacity: 1;
       margin-left: 0;
@@ -27,10 +28,10 @@
     }
 
     input {
-      width: 48%;
+      width: 45%;
       background: transparent;
       color: #fff;
-      font-size: 2em;
+      font-size: 1em;
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: inset 0.2px 0.2px 0.2px rgba(0,0,0,0.3);
       padding-left: 0.5em;
@@ -44,7 +45,7 @@
     label {
       color: rgba(255,255,255, 0.8);
       font-size: 50px;
-      width: 48%;
+      width: 45%;
     }
 
     h3 {
