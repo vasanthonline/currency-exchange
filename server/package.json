@@ -1,7 +1,7 @@
 {
-  "name": "revolut_currency_exchange",
+  "name": "currency_exchange",
   "version": "1.0.0",
-  "description": "Revolut currency exchange",
+  "description": "Currency exchange",
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
