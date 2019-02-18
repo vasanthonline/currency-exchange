@@ -6,17 +6,16 @@ source ~/.nvm/nvm.sh
 nvm install 10.15.1
 nvm use 10.15.1
 npm install yarn -g
-npm install npx -g
 
 # Client
 cd ./../client/
 yarn install --production=false
-CI=true npx run test
-npx run build
+CI=true npm run test
+npm run build
 
 # Server
 cd ./../server/
 yarn install --production=false
-npx run compile
-NODE_ENV=staging npx run test
+npm run compile
+NODE_ENV=staging npm run test
 

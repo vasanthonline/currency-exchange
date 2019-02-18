@@ -4,10 +4,10 @@
   "description": "Currency exchange",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc",
-    "compile:watch": "tsc --watch",
-    "test": "tsc -p tsconfig.test.json && nyc mocha build-tests/test/*.js --exit",
-    "test:watch": "mocha --require ts-node/register --watch --watch-extensions ts test/*.ts",
+    "compile": "./node_modules/.bin/tsc",
+    "compile:watch": "./node_modules/.bin/tsc --watch",
+    "test": "./node_modules/.bin/tsc -p tsconfig.test.json && ./node_modules/.bin/nyc mocha build-tests/test/*.js --exit",
+    "test:watch": "./node_modules/.bin/mocha --require ts-node/register --watch --watch-extensions ts test/*.ts",
     "start": "node dist/main.js"
   },
   "engines": {
